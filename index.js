@@ -83,7 +83,7 @@ getUser(1, function (user) {
 
   //Get the repositories
   getRepositories(user.gitHubUserName, (repositories) => {
-    console.log("User's Repostories: ", repositories);
+    console.log("User's Repostories:", repositories);
   });
 });
 
@@ -99,7 +99,9 @@ function getUser(id, callback) {
 
 function getRepositories(username, callback) {
   setTimeout(() => {
-    console.log("Reading user's repositories...");
+    console.log("Reading user's repositories form GitHub...");
     callback(["repo1", "repo2", "repo3"]);
   }, 2000);
 }
+// Yukarıdaki örnekte her fonskiyon çıktısı bir diğerinin girdisi olacak şekilde yazıldığı
+// için getUser() fonsiyonundaki gibi iç içe çok fazla girdi olabilir. Bu da pek istenmeyen bir durumdur.
