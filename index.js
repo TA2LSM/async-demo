@@ -1,5 +1,6 @@
 //NodeJS kodu "single thread" olarak çalışır
 
+/** EXAMPLE (1) ***************************************************************/
 /*
 console.log("Before");
 
@@ -14,7 +15,9 @@ console.log("After");
 //2sn geçinde yukardaki kodu çağırır yine free duruma düşer.
 //konsola Before, After ve Reading a user from a database... yazılır.
 */
+/******************************************************************************/
 
+/** EXAMPLE (2) ***************************************************************/
 /*
 console.log("Before");
 const user = getUser(1);
@@ -28,6 +31,9 @@ function getUser(id) {
   }, 2000);
 }
 */
+/******************************************************************************/
+
+/** EXAMPLE (3) ***************************************************************/
 /*
 console.log("Before");
 const user = getUser(1);
@@ -43,12 +49,14 @@ function getUser(id) {
   return 5;
 }
 */
+/******************************************************************************/
 
-// *****************************************************************
 // Callbacks
 // Promises
 // Async/await
 // bunları kullanarak async işlemleri yapıyoruz.
+
+/** EXAMPLE (4) ***************************************************************/
 /*
 console.log("Before");
 
@@ -74,7 +82,10 @@ function getUser(id, callback) {
 // getUser içerisinde tanımlanan function(user) işletilir ve konsola user bilgisi yazdırılır.
 // *****************************************************************
 */
+/******************************************************************************/
 
+/** EXAMPLE (5) ***************************************************************/
+/*
 console.log("Before");
 
 //getUser(1, (user) => {  //ya da aşağıdaki gibi yazılabilir...
@@ -103,5 +114,45 @@ function getRepositories(username, callback) {
     callback(["repo1", "repo2", "repo3"]);
   }, 2000);
 }
-// Yukarıdaki örnekte her fonskiyon çıktısı bir diğerinin girdisi olacak şekilde yazıldığı
-// için getUser() fonsiyonundaki gibi iç içe çok fazla girdi olabilir. Bu da pek istenmeyen bir durumdur.
+// Yukarıdaki örnekte her fonskiyon çıktısı bir diğerinin girdisi olacak şekilde yazıldığı için
+// (nested structure) getUser() fonsiyonundaki gibi iç içe çok fazla girdi olabilir.
+// Bu da pek istenmeyen bir durumdur. Bu duruma CALLBACK HELL problem (Christmas Tree Problem) denir.
+*/
+
+/**
+ * // Yukardaki kodu synchronous olarak yazsaydık şöyle bir yapı olacaktı:
+ * console.log("Before");
+ * const user = getUser(1);
+ * const repositories = getRepositories(user.gitHubUsername);
+ * const commits = getCommits(repositories[0]);
+ * console.log("After");
+ */
+/******************************************************************************/
+
+/** EXAMPLE (6) ***************************************************************/
+console.log("Before");
+
+getUser(1, function (user) {
+  console.log("User:", user);
+
+  //Get the repositories
+  getRepositories(user.gitHubUserName, (repositories) => {
+    console.log("User's Repostories:", repositories);
+  });
+});
+
+console.log("After");
+
+function getUser(id, callback) {
+  setTimeout(() => {
+    console.log("Reading a user from a database...");
+    callback({ id: id, gitHubUserName: "ta2lsm" });
+  }, 2000);
+}
+
+function getRepositories(username, callback) {
+  setTimeout(() => {
+    console.log("Reading user's repositories form GitHub...");
+    callback(["repo1", "repo2", "repo3"]);
+  }, 2000);
+}
