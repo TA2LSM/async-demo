@@ -118,6 +118,13 @@ function getRepositories(username, callback) {
 // (nested structure) getUser() fonsiyonundaki gibi iç içe çok fazla girdi olabilir.
 // Bu da pek istenmeyen bir durumdur. Bu duruma CALLBACK HELL problem (Christmas Tree Problem) denir.
 */
+/**
+ * yukarıdaki kod parçasında,
+ ... (repositories) => {
+    console.log("User's Repostories:", repositories);
+  }...
+ * kısmına "anonymous function" denir. (ismi olamayan fonksiyon)
+*/
 
 /**
  * // Yukardaki kodu synchronous olarak yazsaydık şöyle bir yapı olacaktı:
@@ -132,14 +139,8 @@ function getRepositories(username, callback) {
 /** EXAMPLE (6) ***************************************************************/
 console.log("Before");
 
-getUser(1, function (user) {
-  console.log("User:", user);
-
-  //Get the repositories
-  getRepositories(user.gitHubUserName, (repositories) => {
-    console.log("User's Repostories:", repositories);
-  });
-});
+//Get the repositories
+getUser(1, getRepositories);
 
 console.log("After");
 
@@ -150,9 +151,23 @@ function getUser(id, callback) {
   }, 2000);
 }
 
-function getRepositories(username, callback) {
+function getRepositories(user) {
+  getUserRepositories(user.gitHubUserName, getCommits);
+  //getCommits parametre değildir. fonksiyon referansıdır.
+}
+
+function getUserRepositories(username, callback) {
   setTimeout(() => {
     console.log("Reading user's repositories form GitHub...");
     callback(["repo1", "repo2", "repo3"]);
   }, 2000);
+}
+
+function getCommits(repositories) {
+  displayCommits(repositories);
+  //getCommits(repositories, displayCommits); //burası mantık olarak hatalı.
+}
+
+function displayCommits(commits) {
+  console.log(commits);
 }
