@@ -43,12 +43,16 @@ function getUser(id) {
   return 5;
 }
 */
+
+// *****************************************************************
 // Callbacks
 // Promises
 // Async/await
 // bunları kullanarak async işlemleri yapıyoruz.
+/*
 console.log("Before");
 
+//getUser(1, (user) => {  //ya da aşağıdaki gibi yazılabilir...
 getUser(1, function (user) {
   console.log("User:", user);
 });
@@ -68,4 +72,34 @@ function getUser(id, callback) {
 // 2sn sonra konsola "Reading a user from a database..." yazılır ve user odjesi
 // oluşturulup callback() olarak girdi verilen fonksiyona bu bilgi girdi olarak döndürülür.
 // getUser içerisinde tanımlanan function(user) işletilir ve konsola user bilgisi yazdırılır.
-git Infinity
+// *****************************************************************
+*/
+
+console.log("Before");
+
+//getUser(1, (user) => {  //ya da aşağıdaki gibi yazılabilir...
+getUser(1, function (user) {
+  console.log("User:", user);
+
+  //Get the repositories
+  getRepositories(user.gitHubUserName, (repositories) => {
+    console.log("User's Repostories: ", repositories);
+  });
+});
+
+console.log("After");
+
+//callback default bir isimdir ve tanınımlıdır. Bu çekilde yazılması gerekiyor.
+function getUser(id, callback) {
+  setTimeout(() => {
+    console.log("Reading a user from a database...");
+    callback({ id: id, gitHubUserName: "ta2lsm" });
+  }, 2000);
+}
+
+function getRepositories(username, callback) {
+  setTimeout(() => {
+    console.log("Reading user's repositories...");
+    callback(["repo1", "repo2", "repo3"]);
+  }, 2000);
+}
